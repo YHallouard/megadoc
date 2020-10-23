@@ -1,20 +1,21 @@
-MEGADOC documentation!
-==============================================
+MEGADOC !
+=========
 
 Contents:
 
 .. toctree::
    :maxdepth: 4
+   :titlesonly:
+   :numbered:
 
    Git
    Preprocessing
    Dataframe
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   Classification
+   Baseline
+   Metrics
+   Datetime
+   Random
+   Image
+   EDA
+   Docker
