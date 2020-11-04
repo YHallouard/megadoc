@@ -41,7 +41,7 @@ jobs:
     - name: Create Html
       run: |
         cd docs/ && make html
-        cd .. && mv docs/_build _build
+        cd .. && mv docs/_build/html/** docs
     - name: Publish Html
       run: |
         git add .
