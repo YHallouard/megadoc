@@ -39,6 +39,7 @@ jobs:
     - name: Create Html
       run: |
         cd docs/ && make html
+        mv docs/_build _build
     - name: Publish Html
       run: |
         git commit -a -m "Documentation update"
