@@ -44,5 +44,6 @@ jobs:
         cd .. && mv docs/_build _build
     - name: Publish Html
       run: |
+        git add .
         git commit -a -m "Documentation update"
         git push --force origin docs
