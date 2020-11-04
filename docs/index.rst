@@ -19,3 +19,4 @@ Contents:
    Image
    EDA
    Docker
+   Azure
