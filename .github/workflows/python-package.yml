@@ -34,7 +34,7 @@ jobs:
     - name: Branch docs configuration
       run: |
         git checkout -b docs
-        git pull origin docs
+        git pull origin docs --allow-unrelated-histories
         git reset --hard origin/master
     - name: Create Html
       run: |
