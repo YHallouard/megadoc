@@ -36,9 +36,8 @@ jobs:
         git config --global user.email "megadoc_builder"
         git config --global user.name "megadoc_builder"
         git checkout -b docs
-        git pull origin docs --allow-unrelated-histories
-        git rebase -X ours origin/master
-        #git reset --hard origin/master
+        git pull origin docs -X ours --allow-unrelated-histories
+        git reset --hard origin/master
     - name: Create Html
       run: |
         cd docs/ && make html
