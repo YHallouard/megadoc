@@ -56,4 +56,16 @@ Revert several commits
 
     git revert HEAD~3..HEAD
 
-hello
+Resolving merge conflicts automatically
+#######################################
+In cases when you prefer the work of other developers rather than yours.
+
+.. code-block:: bash
+
+    git pull -X theirs
+
+In cases when you prefer your work.
+
+.. code-block:: bash
+
+    git pull -X ours
