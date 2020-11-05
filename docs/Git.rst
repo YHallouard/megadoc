@@ -55,3 +55,5 @@ Revert several commits
 .. code-block:: bash
 
     git revert HEAD~3..HEAD
+
+hello
