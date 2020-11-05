@@ -20,3 +20,4 @@ Contents:
    EDA
    Docker
    Azure
+   Regression
