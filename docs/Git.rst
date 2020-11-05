@@ -43,3 +43,15 @@ See all branches on remote and local
 .. code-block:: bash
 
     git branch -avv
+
+Revert a commit
+###############
+.. code-block:: bash
+
+    git revert HEAD~1..HEAD
+
+Revert several commits
+
+.. code-block:: bash
+
+    git revert HEAD~3..HEAD
