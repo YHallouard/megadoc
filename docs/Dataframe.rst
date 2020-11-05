@@ -70,3 +70,12 @@ To that :
 +------------+------------+-----------+-----------+-----------+
 | 3          | 1          |03/01/2020 | 0.083     | 0.083     |
 +------------+------------+-----------+-----------+-----------+
+
+Sort On
+--------
+
+DataFrame.sort_values(by, axis=0, ascending=True, inplace=False, kind='quicksort', na_position='last')
+
+.. code-block:: python
+
+    df.sort_values(by=['col1'])
