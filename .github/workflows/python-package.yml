@@ -41,7 +41,7 @@ jobs:
     - name: Create Html
       run: |
         cd docs/ && make html
-        cd .. && mkdir docs/_static
+        cd ..
         mv docs/_build/html/_static/** docs/_static
         rm docs/_build/html/_static/
         mv docs/_build/html/** docs
