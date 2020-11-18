@@ -42,8 +42,10 @@ jobs:
       run: |
         cd docs/ && make html
         cd ..
+        mv docs/_build/html/_static/css/** docs/_static/css
+        rm docs/_build/html/_static/css
         mv docs/_build/html/_static/** docs/_static
-        rm docs/_build/html/_static/
+        rm docs/_build/html/_static/css
         mv docs/_build/html/** docs
     - name: Publish Html
       run: |
