@@ -44,6 +44,8 @@ jobs:
         cd ..
         mv docs/_build/html/_static/css/** docs/_static/css
         rmdir docs/_build/html/_static/css
+        mv docs/_build/html/_static/images/** docs/_static/images
+        rmdir docs/_build/html/_static/images
         mv docs/_build/html/_static/** docs/_static
         rmdir docs/_build/html/_static
         mv docs/_build/html/** docs
