@@ -123,13 +123,13 @@ Ignore any events delayed by X minutes or more. And slidding windows.
     from pyspark.sql.functions import col, window
 
     countsDF = (streamDF  # Start with the DataFrame
-      .withWatermark("DepartureAt", "300 minutes")             # Specify the watermark
+      .withWatermark("DepartureAt", "300 minutes")
       .groupBy(col("UniqueCarrier"),
-               window(col("DepartureAt"), "30 minutes"))            # Aggregate the data
-      .count()            # Produce a count for each aggreate
-      .select(col("window.start").alias("start"), # Elevate field to column
-              col("count"),                       # Include count
-              col("UniqueCarrier"))            # Add the column "hour", extracting it from "window.start"
+               window(col("DepartureAt"), "30 minutes"))
+      .count()
+      .select(col("window.start").alias("start"),
+              col("count"),
+              col("UniqueCarrier"))
     )
 
 Train/Test Split in DataBricks
@@ -137,7 +137,6 @@ Train/Test Split in DataBricks
 
 .. code-block:: python
 
-    trainDF, testDF = preprocessedDF.randomSplit(
-    [0.7, 0.3],  # 70-30 split
-    seed=42)     # For reproducibility
+    trainDF, testDF = preprocessedDF.randomSplit([0.7, 0.3],  # 70-30 split
+                                                  seed=42)     # For reproducibility
 
