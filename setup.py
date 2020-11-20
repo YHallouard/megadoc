@@ -3,8 +3,7 @@ from setuptools import setup, find_packages
 with open('README.md', 'r') as fh:
     long_description = fh.read()
 
-required = ['sphinx'
-            ]
+required = ['sphinx']
 
 __version__ = 'init'
 exec(open('megadoc/version.py').read())
