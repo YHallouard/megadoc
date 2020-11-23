@@ -4,7 +4,7 @@ Exploratory Data Analysis
 Missing Values Analysis
 -----------------------
 
-Interring way tp plot missing values.
+Interesting way to plot missing values.
 
 .. code-block:: python
 
