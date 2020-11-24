@@ -23,3 +23,4 @@ Contents:
    Regression
    Vizualisation
    Databricks
+   Bash
