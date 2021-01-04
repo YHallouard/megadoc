@@ -29,5 +29,5 @@ Remove Punctuation in String
    to_remove_characters = string.punctuation + string.digits
 
    # remove punctuations and digits from oldtext
-   table_ = str.maketrans('', '', to_remove_characters)
+   table_ = str.maketrans(to_remove_characters, ' ' * to_remove_characters)
    cleaned_text = text.translate(table_)
