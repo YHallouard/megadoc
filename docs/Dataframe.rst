@@ -79,3 +79,25 @@ DataFrame.sort_values(by, axis=0, ascending=True, inplace=False, kind='quicksort
 .. code-block:: python
 
     df.sort_values(by=['col1'])
+
+Parallelize apply
+-----------------
+
+.. code-block:: python
+    from multiprocessing import  Pool
+    from functools import partial
+    import numpy as np
+
+    def parallelize(data, func, num_of_processes=8):
+        data_split = np.array_split(data, num_of_processes)
+        pool = Pool(num_of_processes)
+        data = pd.concat(pool.map(func, data_split))
+        pool.close()
+        pool.join()
+        return data
+
+    def run_on_subset(func, data_subset):
+        return data_subset.apply(func, axis=1)
+
+    def parallelize_on_rows(data, func, num_of_processes=8):
+        return parallelize(data, partial(run_on_subset, func), num_of_processes)
