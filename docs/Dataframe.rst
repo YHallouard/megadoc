@@ -84,6 +84,7 @@ Parallelize apply
 -----------------
 
 .. code-block:: python
+
     from multiprocessing import  Pool
     from functools import partial
     import numpy as np
