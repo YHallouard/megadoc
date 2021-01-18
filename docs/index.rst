@@ -24,3 +24,4 @@ Contents:
    Vizualisation
    Databricks
    Bash
+   Homebrew
