@@ -50,6 +50,12 @@ Revert a commit
 
     git revert HEAD~1..HEAD
 
+or
+
+.. code-block:: bash
+
+    git reset --hard HEAD^
+
 Revert several commits
 
 .. code-block:: bash
