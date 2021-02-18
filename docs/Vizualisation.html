@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>14. Vizualisation &#8212; MEGADOC 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="15. Databricks" href="Databricks.html" />
+    <link rel="prev" title="13. Regression" href="Regression.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="vizualisation">
+<h1><span class="section-number">14. </span>Vizualisation<a class="headerlink" href="#vizualisation" title="Permalink to this headline">¶</a></h1>
+<section id="saving-a-figure">
+<h2><span class="section-number">14.1. </span>Saving a figure<a class="headerlink" href="#saving-a-figure" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;temp.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="n">fig</span><span class="o">.</span><span class="n">dpi</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="improve-plotting">
+<h2><span class="section-number">14.2. </span>Improve Plotting<a class="headerlink" href="#improve-plotting" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="o">%</span><span class="n">config</span> <span class="n">InlineBackend</span><span class="o">.</span><span class="n">figure_format</span><span class="o">=</span><span class="s1">&#39;retina&#39;</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;whitegrid&#39;</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;muted&#39;</span><span class="p">,</span> <span class="n">font_scale</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
+
+<span class="n">HAPPY_COLORS_PALETTE</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#01BEFE&quot;</span><span class="p">,</span> <span class="s2">&quot;#FFDD00&quot;</span><span class="p">,</span> <span class="s2">&quot;#FF7D00&quot;</span><span class="p">,</span> <span class="s2">&quot;#FF006D&quot;</span><span class="p">,</span> <span class="s2">&quot;#ADFF02&quot;</span><span class="p">,</span> <span class="s2">&quot;#8F00FF&quot;</span><span class="p">]</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">set_palette</span><span class="p">(</span><span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="n">HAPPY_COLORS_PALETTE</span><span class="p">))</span>
+
+<span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">8</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">MEGADOC</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Git.html">1. Git</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Preprocessing.html">2. Prepocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Dataframe.html">3. DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Classification.html">4. Classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Baseline.html">5. Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Metrics.html">6. Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Datetime.html">7. Datetime</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Random.html">8. Random</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Image.html">9. Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EDA.html">10. Exploratory Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Docker.html">11. Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Azure.html">12. Azure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Regression.html">13. Regression</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">14. Vizualisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Databricks.html">15. Databricks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bash.html">16. Bash Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Homebrew.html">17. HomeBrew</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Pipeline.html">18. Pipeline</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Regression.html" title="previous chapter"><span class="section-number">13. </span>Regression</a></li>
+      <li>Next: <a href="Databricks.html" title="next chapter"><span class="section-number">15. </span>Databricks</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Yann Hallouard.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/Vizualisation.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

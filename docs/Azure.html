@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>12. Azure &#8212; MEGADOC 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="13. Regression" href="Regression.html" />
+    <link rel="prev" title="11. Docker" href="Docker.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="azure">
+<h1><span class="section-number">12. </span>Azure<a class="headerlink" href="#azure" title="Permalink to this headline">¶</a></h1>
+<section id="blob-storage">
+<h2><span class="section-number">12.1. </span>Blob Storage<a class="headerlink" href="#blob-storage" title="Permalink to this headline">¶</a></h2>
+<section id="blob-storage-downloader">
+<h3><span class="section-number">12.1.1. </span>Blob Storage Downloader<a class="headerlink" href="#blob-storage-downloader" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">azure.storage.blob</span> <span class="kn">import</span> <span class="n">BlobServiceClient</span><span class="p">,</span> <span class="n">BlobClient</span>
+<span class="kn">from</span> <span class="nn">azure.storage.blob</span> <span class="kn">import</span> <span class="n">ContentSettings</span><span class="p">,</span> <span class="n">ContainerClient</span>
+
+<span class="c1"># IMPORTANT: Replace connection string with your storage account connection string</span>
+<span class="c1"># Usually starts with DefaultEndpointsProtocol=https;...</span>
+<span class="n">MY_CONNECTION_STRING</span> <span class="o">=</span> <span class="s2">&quot;REPLACE_THIS&quot;</span>
+
+<span class="c1"># Replace with blob container</span>
+<span class="n">MY_BLOB_CONTAINER</span> <span class="o">=</span> <span class="s2">&quot;myimages&quot;</span>
+
+<span class="c1"># Replace with the local folder where you want files to be downloaded</span>
+<span class="n">LOCAL_BLOB_PATH</span> <span class="o">=</span> <span class="s2">&quot;REPLACE_THIS&quot;</span>
+
+<span class="k">class</span> <span class="nc">AzureBlobFileDownloader</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Intializing AzureBlobFileDownloader&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Initialize the connection to Azure storage account</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blob_service_client</span> <span class="o">=</span>  <span class="n">BlobServiceClient</span><span class="o">.</span><span class="n">from_connection_string</span><span class="p">(</span><span class="n">MY_CONNECTION_STRING</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">my_container</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blob_service_client</span><span class="o">.</span><span class="n">get_container_client</span><span class="p">(</span><span class="n">MY_BLOB_CONTAINER</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">save_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">file_name</span><span class="p">,</span><span class="n">file_content</span><span class="p">):</span>
+        <span class="c1"># Get full path to the file</span>
+        <span class="n">download_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">LOCAL_BLOB_PATH</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+
+        <span class="c1"># for nested blobs, create local path as well!</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">download_file_path</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">download_file_path</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+          <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">file_content</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">download_all_blobs_in_container</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">my_blobs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_container</span><span class="o">.</span><span class="n">list_blobs</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">blob</span> <span class="ow">in</span> <span class="n">my_blobs</span><span class="p">:</span>
+          <span class="nb">print</span><span class="p">(</span><span class="n">blob</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+          <span class="nb">bytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_container</span><span class="o">.</span><span class="n">get_blob_client</span><span class="p">(</span><span class="n">blob</span><span class="p">)</span><span class="o">.</span><span class="n">download_blob</span><span class="p">()</span><span class="o">.</span><span class="n">readall</span><span class="p">()</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">save_blob</span><span class="p">(</span><span class="n">blob</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span>
+
+<span class="c1"># Initialize class and upload files</span>
+<span class="n">azure_blob_file_downloader</span> <span class="o">=</span> <span class="n">AzureBlobFileDownloader</span><span class="p">()</span>
+<span class="n">azure_blob_file_downloader</span><span class="o">.</span><span class="n">download_all_blobs_in_container</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="avro-reader">
+<h3><span class="section-number">12.1.2. </span>Avro Reader<a class="headerlink" href="#avro-reader" title="Permalink to this headline">¶</a></h3>
+<p>Check this <a class="reference external" href="https://github.com/Azure-Samples/IoTEdgeAndMlSample/tree/master/HubAvroReader">git</a>.</p>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">MEGADOC</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Git.html">1. Git</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Preprocessing.html">2. Prepocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Dataframe.html">3. DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Classification.html">4. Classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Baseline.html">5. Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Metrics.html">6. Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Datetime.html">7. Datetime</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Random.html">8. Random</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Image.html">9. Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EDA.html">10. Exploratory Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Docker.html">11. Docker</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">12. Azure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Regression.html">13. Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Vizualisation.html">14. Vizualisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Databricks.html">15. Databricks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bash.html">16. Bash Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Homebrew.html">17. HomeBrew</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Pipeline.html">18. Pipeline</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Docker.html" title="previous chapter"><span class="section-number">11. </span>Docker</a></li>
+      <li>Next: <a href="Regression.html" title="next chapter"><span class="section-number">13. </span>Regression</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Yann Hallouard.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/Azure.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

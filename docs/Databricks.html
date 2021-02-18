@@ -1,0 +1,250 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>15. Databricks &#8212; MEGADOC 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="16. Bash Commands" href="Bash.html" />
+    <link rel="prev" title="14. Vizualisation" href="Vizualisation.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="databricks">
+<h1><span class="section-number">15. </span>Databricks<a class="headerlink" href="#databricks" title="Permalink to this headline">¶</a></h1>
+<section id="column-function">
+<h2><span class="section-number">15.1. </span>Column function<a class="headerlink" href="#column-function" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">col</span>
+</pre></div>
+</div>
+</section>
+<section id="create-a-datatype-schema">
+<h2><span class="section-number">15.2. </span>Create a datatype schema<a class="headerlink" href="#create-a-datatype-schema" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">StructType</span><span class="p">,</span> <span class="n">StructField</span><span class="p">,</span> <span class="n">StringType</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">,</span> <span class="n">DoubleType</span><span class="p">,</span> <span class="n">BooleanType</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">from_json</span><span class="p">,</span> <span class="n">unix_timestamp</span>
+
+<span class="n">schema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">([</span>
+  <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;channel&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+  <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;comment&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+  <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+  <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;flag&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+  <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;geocoding&quot;</span><span class="p">,</span> <span class="n">StructType</span><span class="p">([</span>                 <span class="c1"># (OBJECT): Added by the server, field contains IP address geocoding information for anonymous edit.</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;city&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;country&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;countryCode2&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;countryCode3&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;stateProvince&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="n">DoubleType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;longitude&quot;</span><span class="p">,</span> <span class="n">DoubleType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+  <span class="p">]),</span> <span class="kc">True</span><span class="p">),</span>
+  <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;isAnonymous&quot;</span><span class="p">,</span> <span class="n">BooleanType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>      <span class="c1"># (BOOLEAN): Whether or not the change was made by an anonymous user</span>
+  <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;isNewPage&quot;</span><span class="p">,</span> <span class="n">BooleanType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+  <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;isRobot&quot;</span><span class="p">,</span> <span class="n">BooleanType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+  <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;isUnpatrolled&quot;</span><span class="p">,</span> <span class="n">BooleanType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+  <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;namespace&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>         <span class="c1"># (STRING): Page&#39;s namespace. See https://en.wikipedia.org/wiki/Wikipedia:Namespace</span>
+  <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;page&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>              <span class="c1"># (STRING): Printable name of the page that was edited</span>
+  <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;pageURL&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>           <span class="c1"># (STRING): URL of the page that was edited</span>
+  <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>         <span class="c1"># (STRING): Time the edit occurred, in ISO-8601 format</span>
+  <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+  <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>              <span class="c1"># (STRING): User who made the edit or the IP address associated with the anonymous editor</span>
+  <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;userURL&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+  <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;wikipediaURL&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+  <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;wikipedia&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>         <span class="c1"># (STRING): Short name of the Wikipedia that was edited (e.g., &quot;en&quot; for the English)</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="start-a-stream">
+<h2><span class="section-number">15.3. </span>Start a Stream<a class="headerlink" href="#start-a-stream" title="Permalink to this headline">¶</a></h2>
+<p>For parquet source file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># TODO</span>
+ <span class="n">dataPath</span> <span class="o">=</span> <span class="s2">&quot;/mnt/training/asa/flights/2007-01-stream.parquet/&quot;</span>
+
+ <span class="n">parquetSchema</span> <span class="o">=</span> <span class="s2">&quot;DepartureAt timestamp, FlightDate string, DepTime string, CRSDepTime string, ArrTime string, &quot;</span> <span class="o">+</span> \
+ <span class="s2">&quot;CRSArrTime string, UniqueCarrier string, FlightNum integer, TailNum string, ActualElapsedTime string,&quot;</span> <span class="o">+</span> \
+ <span class="s2">&quot; CRSElapsedTime string, AirTime string, ArrDelay string, DepDelay string, Origin string, Dest string, &quot;</span> <span class="o">+</span> \
+ <span class="s2">&quot;Distance string, TaxiIn string, TaxiOut string, Cancelled integer, CancellationCode string, Diverted integer,&quot;</span> <span class="o">+</span> \
+ <span class="s2">&quot;CarrierDelay string, WeatherDelay string, NASDelay string, SecurityDelay string, LateAircraftDelay string&quot;</span>
+
+ <span class="c1"># Configure the shuffle partitions to match the number of cores</span>
+ <span class="n">spark</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;spark.sql.shuffle.partitions&quot;</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">defaultParallelism</span><span class="p">)</span>
+
+ <span class="n">streamDF</span> <span class="o">=</span> <span class="p">(</span><span class="n">spark</span>                   <span class="c1"># Start with the SparkSesion</span>
+   <span class="o">.</span><span class="n">readStream</span>                       <span class="c1"># Get the DataStreamReader</span>
+   <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;parquet&#39;</span><span class="p">)</span>                <span class="c1"># Configure the stream&#39;s source for the appropriate file type</span>
+   <span class="o">.</span><span class="n">schema</span><span class="p">(</span><span class="n">parquetSchema</span><span class="p">)</span>            <span class="c1"># Specify the parquet files&#39; schema</span>
+   <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;maxFilesPerTrigger&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Restrict Spark to processing only 1 file per trigger</span>
+   <span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dataPath</span><span class="p">)</span>                <span class="c1"># Load the DataFrame specifying its location with dataPath</span>
+ <span class="p">)</span>
+</pre></div>
+</div>
+<section id="kafka-stream">
+<h3><span class="section-number">15.3.1. </span>Kafka Stream<a class="headerlink" href="#kafka-stream" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">col</span>
+<span class="n">spark</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;spark.sql.shuffle.partitions&quot;</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">defaultParallelism</span><span class="p">)</span>
+
+<span class="n">kafkaServer</span> <span class="o">=</span> <span class="s2">&quot;server1.databricks.training:9092&quot;</span>   <span class="c1"># US (Oregon)</span>
+<span class="c1"># kafkaServer = &quot;server2.databricks.training:9092&quot; # Singapore</span>
+
+<span class="n">editsDF</span> <span class="o">=</span> <span class="p">(</span><span class="n">spark</span><span class="o">.</span><span class="n">readStream</span>                        <span class="c1"># Get the DataStreamReader</span>
+  <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;kafka&quot;</span><span class="p">)</span>                                 <span class="c1"># Specify the source format as &quot;kafka&quot;</span>
+  <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;kafka.bootstrap.servers&quot;</span><span class="p">,</span> <span class="n">kafkaServer</span><span class="p">)</span>  <span class="c1"># Configure the Kafka server name and port</span>
+  <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;subscribe&quot;</span><span class="p">,</span> <span class="s2">&quot;en&quot;</span><span class="p">)</span>                       <span class="c1"># Subscribe to the &quot;en&quot; Kafka topic</span>
+  <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;startingOffsets&quot;</span><span class="p">,</span> <span class="s2">&quot;earliest&quot;</span><span class="p">)</span>           <span class="c1"># Rewind stream to beginning when we restart notebook</span>
+  <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;maxOffsetsPerTrigger&quot;</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>            <span class="c1"># Throttle Kafka&#39;s processing of the streams</span>
+  <span class="o">.</span><span class="n">load</span><span class="p">()</span>                                          <span class="c1"># Load the DataFrame</span>
+  <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;STRING&quot;</span><span class="p">))</span>             <span class="c1"># Cast the &quot;value&quot; column to STRING</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="stop-streams">
+<h2><span class="section-number">15.4. </span>Stop Streams<a class="headerlink" href="#stop-streams" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">spark</span><span class="o">.</span><span class="n">streams</span><span class="o">.</span><span class="n">active</span><span class="p">:</span> <span class="c1"># Iterate over all active streams</span>
+  <span class="n">s</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>                     <span class="c1"># Stop the stream</span>
+</pre></div>
+</div>
+</section>
+<section id="configure-suffle-partition">
+<h2><span class="section-number">15.5. </span>Configure Suffle Partition<a class="headerlink" href="#configure-suffle-partition" title="Permalink to this headline">¶</a></h2>
+<p>Configure the shuffle partitions to match the number of cores</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;spark.sql.shuffle.partitions&quot;</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">defaultParallelism</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="unqued-delayed-event-in-stream">
+<h2><span class="section-number">15.6. </span>Unqued delayed event in stream<a class="headerlink" href="#unqued-delayed-event-in-stream" title="Permalink to this headline">¶</a></h2>
+<p>Ignore any events delayed by X minutes or more. And slidding windows.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">col</span><span class="p">,</span> <span class="n">window</span>
+
+<span class="n">countsDF</span> <span class="o">=</span> <span class="p">(</span><span class="n">streamDF</span>  <span class="c1"># Start with the DataFrame</span>
+  <span class="o">.</span><span class="n">withWatermark</span><span class="p">(</span><span class="s2">&quot;DepartureAt&quot;</span><span class="p">,</span> <span class="s2">&quot;300 minutes&quot;</span><span class="p">)</span>
+  <span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;UniqueCarrier&quot;</span><span class="p">),</span>
+           <span class="n">window</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;DepartureAt&quot;</span><span class="p">),</span> <span class="s2">&quot;30 minutes&quot;</span><span class="p">))</span>
+  <span class="o">.</span><span class="n">count</span><span class="p">()</span>
+  <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;window.start&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">),</span>
+          <span class="n">col</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">),</span>
+          <span class="n">col</span><span class="p">(</span><span class="s2">&quot;UniqueCarrier&quot;</span><span class="p">))</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="train-test-split-in-databricks">
+<h2><span class="section-number">15.7. </span>Train/Test Split in DataBricks<a class="headerlink" href="#train-test-split-in-databricks" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trainDF</span><span class="p">,</span> <span class="n">testDF</span> <span class="o">=</span> <span class="n">preprocessedDF</span><span class="o">.</span><span class="n">randomSplit</span><span class="p">([</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span>  <span class="c1"># 70-30 split</span>
+                                              <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>     <span class="c1"># For reproducibility</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">MEGADOC</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Git.html">1. Git</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Preprocessing.html">2. Prepocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Dataframe.html">3. DataFrame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Classification.html">4. Classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Baseline.html">5. Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Metrics.html">6. Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Datetime.html">7. Datetime</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Random.html">8. Random</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Image.html">9. Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EDA.html">10. Exploratory Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Docker.html">11. Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Azure.html">12. Azure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Regression.html">13. Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Vizualisation.html">14. Vizualisation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">15. Databricks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bash.html">16. Bash Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Homebrew.html">17. HomeBrew</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Pipeline.html">18. Pipeline</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Vizualisation.html" title="previous chapter"><span class="section-number">14. </span>Vizualisation</a></li>
+      <li>Next: <a href="Bash.html" title="next chapter"><span class="section-number">16. </span>Bash Commands</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Yann Hallouard.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/Databricks.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
