@@ -25,3 +25,4 @@ Contents:
    Databricks
    Bash
    Homebrew
+   Pipeline

@@ -22,3 +22,12 @@ M.
    dist2 = stats.beta.pdf(x,8,5)
    ws_distance = wasserstein_distance(dist1,dist2)
 
+
+Sklearn Metrics
+~~~~~~~~~~~~~~~
+To import or get the short name of all metrics in sklearn.
+
+.. code-block:: python
+
+    from sklearn.metrics import SCORERS
+    SCORERS.keys()
